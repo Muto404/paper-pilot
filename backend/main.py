@@ -49,9 +49,6 @@ async def upload_paper(file: UploadFile = File(...)):
 
     try:
         text = extract_text_from_pdf(file_path)
-        print(f"--- Full text from {file.filename} ---")
-        print(text)
-        print("--------------------------------------------------")
         VectorStore(paper_id, text)
     finally:
         os.remove(file_path)

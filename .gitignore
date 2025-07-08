@@ -11,3 +11,7 @@ dist/
 # VSCode
 .vscode/
 .env
+
+# Project Docs
+项目架构总览.md
+backend/sample.txt
