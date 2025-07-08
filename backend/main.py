@@ -49,6 +49,9 @@ async def upload_paper(file: UploadFile = File(...)):
 
     try:
         text = extract_text_from_pdf(file_path)
+        print(f"--- Full text from {file.filename} ---")
+        print(text)
+        print("--------------------------------------------------")
         VectorStore(paper_id, text)
     finally:
         os.remove(file_path)
@@ -66,17 +69,16 @@ async def ask_question(paper_id: str, request: AskRequest):
     sentences = retriever_data["sentences"]
     
     query_embedding = model.encode([request.question])
-    distances, indices = vector_db.search(query_embedding, k=3)
+    distances, indices = vector_db.search(query_embedding, k=10)
     
     context = "\n".join([sentences[i] for i in indices[0]])
     
+    print(f"--- Context for question: {request.question} ---")
+    print(context)
+    print("--------------------------------------------------")
+
     answer = get_answer_from_llm(request.question, context)
     return {"answer": answer}
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
-
-
-# 这是一个方便本地开发时直接运行的入口
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

@@ -7,8 +7,8 @@ def get_answer_from_llm(question: str, context: str):
     response = client.chat.completions.create(
         model="deepseek-chat",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": f"Context: {context}\n\nQuestion: {question}"},
+            {"role": "system", "content": "You are a professional academic assistant. Please answer the user's question based on the provided context. If the context does not contain the answer, state that you cannot answer based on the given information."},
+            {"role": "user", "content": f"Based on the following context, please answer the question.\n\nContext:\n\"\"\"\n{context}\n\"\"\"\n\nQuestion: {question}"},
         ],
         stream=False
     )

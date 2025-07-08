@@ -1,6 +1,7 @@
 import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 papers_storage = {}
 
@@ -12,8 +13,12 @@ class VectorStore:
         self.vector_db = self._create_vector_db()
 
     def _create_vector_db(self):
-        sentences = self.text.split('\n')
-        sentences = [s.strip() for s in sentences if s.strip()]
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=200,
+            length_function=len
+        )
+        sentences = text_splitter.split_text(self.text)
         embeddings = self.model.encode(sentences)
         vector_db = faiss.IndexFlatL2(embeddings.shape[1])
         vector_db.add(np.array(embeddings, dtype=np.float32))

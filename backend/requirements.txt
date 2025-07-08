@@ -3,6 +3,7 @@ uvicorn
 python-multipart
 PyMuPDF
 sentence-transformers
+langchain
 faiss-cpu
 openai
 python-dotenv
